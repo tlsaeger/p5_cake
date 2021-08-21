@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+}
+
+h1{
+  margin: 10px;
+}
+
+*{
+  font-family: sans-serif;
+}
+.emojiPanel{
+  width: 400px;
+  height: 300px;
+  margin: 10px;
+  display: grid;
+  grid-template-columns: repeat(8, auto);
+}
+#emojiWheel{
+  background-color: rgb(245, 245, 245);
+  position: fixed;
+  height: 400px;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 9;
+  overflow-y: scroll;
+}
+#emojiLayer{
+  position: fixed;
+  display: none;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+}
+.emojiRow{
+  cursor: pointer;
+  font-size: 1.5em;
+}
