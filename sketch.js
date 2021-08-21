@@ -7,27 +7,35 @@ let cakeMoverX = 0;
 let score = 0
 let cakeSpeed = 2;
 
+let win = false;
 let menu = true;
 
+let loader = "Loading…"
+let startButton;
+
 let mode = "cake";
-let cakes = ['🎂','🥮','🍰','🧁','🥦','🥕','🍎','🌽'];
+let cakes = ['🎂','🥮','🍰','🧁','🥦','🥕','🥒','🌽'];
 let selectedCake = cakes[0];
 
 
 function setup() {
+startButton = createButton("Start")
+startButton.hide();
 noStroke();
 createCanvas(640,480)
 video = createCapture(VIDEO);
 video.size(640, 480)
 handpose = ml5.handpose(video, handModelLoaded);
 handpose.on('predict', results => {
-  handPredictions = results;
+handPredictions = results;
 })
 video.hide();
 cakeMoverY = height/2;
 }
 function draw(){
-
+  if(score > 19){
+    win = true;
+  }
   // translate(width,0);
   // scale(-1.0,1.0);  
   background(255)
@@ -37,6 +45,12 @@ function draw(){
     // drawHandKeypoints();
     drawMouth();
     drawHand();
+    if(menu){
+    loader = "";
+    startButton.show();
+    startButton.position(20,280)
+    startButton.mousePressed(startSketch)
+    }
   }
   textSize(48)
   cakeMoverX += cakeSpeed;
@@ -44,14 +58,48 @@ function draw(){
     newCake();
   }
   text(selectedCake,cakeMoverX, cakeMoverY)
-  text(score,width/2, height/2 )
+  push()
+  fill('#E4EBFE');
+  stroke('#1F36A3')
+  strokeWeight(4)
+  text(score,width-100, height-50 )
+  pop();
 
   speed();
-  // if(menu){
-  //   rect(0,0,width,height)
-    
-  // }
+  if(menu){
+    push()
+    fill('rgb(225,235,255)');
+    rect(0,0,width,height)
+    fill(0);
+    textAlign(LEFT);
+    textSize(24)
+    text("Processing turned 20, Hooray! 🎉", 20, 50)
+    textSize(20)
+    text("This means you need to eat a lot of cake. \nUse your mouth to get the cakes🎂, but avoid the veggies🥦. \nYou can use your hand to fend off those bad veggies. \n\nPlease allow your webcam to be used." , 20, 100)
+    text(loader, 20, 280)
+    textSize(16)
+    text("Made with ❤️, p5.js & ml5.js by Tom-Lucas Säger | 🐦@t00may", 20, height - 40 )
+    pop();
+  }
+  if(win){
+    push()
+    fill('rgba(225,235,255, 0.5)');
+    rect(0,0,width,height)
+    pop();
+    push()
+    fill(0)
+    textSize(64)
+    text("Happy Birthday,\nProcessing!",50,height/3 )
+    pop();
+  }
 
+}
+function startSketch(){
+  cakeMoverX = 0;
+  startButton.hide();
+  menu = false;
+  
+  
 }
 function faceModelLoaded(){
   console.log("Face")
